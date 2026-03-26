@@ -1,0 +1,15 @@
+<%- include('partials/header.ejs') %>
+    <main>
+        <div class="container">
+            <h2>Edit Todo</h2>
+            <form action="/todos/<%= todo.id %>/edit" method="POST">
+                <input type="text" name="title" value="<%= todo.title %>" required > 
+                
+                <div class="edit-action">
+                    <a href="/" class="btn back">Back</a>
+                    <button type="submit" class="btn save">Save</button>
+                </div> 
+            </form>
+        </div>
+    </main>
+<%- include('partials/footer.ejs') %>

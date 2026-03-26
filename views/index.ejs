@@ -1,0 +1,57 @@
+    <%- include('partials/header.ejs') %>
+
+    <main>
+        <div class="parent">
+            <div class="div1">
+                <div class="wrapper flex-container">
+                    <form action="/todos" method="POST">
+                        <h2>Add Todo</h2>
+                        <div class="input-box">
+                            <input type="text" placeholder="ToDo" name="todoTitle" required>
+                        </div>
+                        <button type="submit" class="btn">Add</button>
+                    </form>
+                </div>
+            </div>
+            <div class="div2">
+                <div class="flex-container sub">
+                    <h2 class="title">Progress : </h2>
+
+                    <h3><%= achievementRate %><span>%</span></h3>
+                    <div class="gauge">
+                        <div class="gauge-bar" style="width: <%= achievementRate %>%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="div3">
+                <div class="flex-container sub">
+                    <h2 class="title">Date : </h2>
+                    <h3><%= month %>, <%= day %></h3>
+                </div>
+            </div>
+            <div class="div4">
+                <h2 class="title">Tasks : </h2>                
+                    <ul class="todo-list">
+                    <% todos.forEach(todo => {  %>
+                        <li class="todo-item">
+                            <div>
+                                <form action="/todos/<%= todo.id %>/toggle" method="POST">
+                                    <input type="checkbox"  <%= todo.completed ? 'checked' : '' %> onchange="this.form.submit()">
+                                    <span class="todo-title"><%= todo.title %></span>
+                                </form>
+                            </div>
+                            <div class="flex-btn">
+                                <a href="/todos/<%= todo.id %>/edit" class="btn edit">Edit</a>
+                                <form action="/todos/<%= todo.id %>/delete" method="POST">
+                                    <button type="submit" class="btn delete">Delete</button>
+                                </form>
+                            </div> 
+                         </li>
+                    <% }); %>
+                    </ul>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer.ejs') %>
+
