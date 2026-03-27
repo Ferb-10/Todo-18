@@ -7,6 +7,7 @@ const port = 3000;
 app.use(express.static('public')); 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Custom Middleware
 function dateGenerator (req, res, next) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; 
     const d = new Date(); 
@@ -15,6 +16,8 @@ function dateGenerator (req, res, next) {
     next(); 
 }
 app.use(dateGenerator); 
+
+let todos = []; 
 
 app.get('/', (req, res) => {
     const total = todos.length;
@@ -27,7 +30,6 @@ app.get('/', (req, res) => {
 }); 
 
 // Add
-let todos = []; 
 app.post('/todos', (req, res) => {
     const todoTitle = req.body.todoTitle; 
     const newTodo = {
@@ -42,13 +44,14 @@ app.post('/todos', (req, res) => {
 
 // Check Box
 app.post('/todos/:id/toggle', (req, res) => {
-  const id = Number(req.params.id);  
-  const todo = todos.find(t => t.id === id);
-  if (todo) {
-    todo.completed = !todo.completed;
-  }
-  console.log(todo);
-  res.redirect('/');
+    // string → number
+    const id = Number(req.params.id);  
+    const todo = todos.find(t => t.id === id);
+    if (todo) {
+        todo.completed = !todo.completed;
+    }
+    console.log(todo);
+    res.redirect('/');
 });
 
 // Edit
@@ -76,6 +79,7 @@ app.post('/todos/:id/edit', (req, res) => {
 // Delete
 app.post('/todos/:id/delete', (req, res) => {
     const id = Number(req.params.id); 
+    // 削除したいIDと違うものだけ残す
     todos = todos.filter(todo => todo.id !== id);
     res.redirect('/'); 
 })
